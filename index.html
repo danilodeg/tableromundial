@@ -25,6 +25,7 @@
   --accent-red: #ff6b6b;
   --accent-green: #51cf66;
   --accent-orange: #ffa94d;
+  --accent-yellow: #ffd93d;
   --chart-grid: rgba(255,255,255,0.05);
   --chart-text: #8b92a9;
   --shadow: rgba(0,212,255,0.15);
@@ -44,6 +45,7 @@ body.light-theme {
   --accent-red: #cc3333;
   --accent-green: #339933;
   --accent-orange: #ee8833;
+  --accent-yellow: #ccaa00;
   --chart-grid: rgba(0,0,0,0.06);
   --chart-text: #666;
   --shadow: rgba(0,136,204,0.15);
@@ -199,6 +201,12 @@ body {
   gap:1.5rem;
   margin-bottom:2rem
 }
+.row3 {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:1.5rem;
+  margin-bottom:2rem
+}
 .lg {
   display:flex;
   flex-wrap:wrap;
@@ -309,8 +317,57 @@ body {
   font-size:0.85rem;
   color:#0f1419
 }
+.stat-row {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0.75rem 0;
+  border-bottom:1px solid var(--border-light);
+  gap:1rem
+}
+.stat-row:last-child {border-bottom:none}
+.stat-team {
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  flex:1;
+  min-width:0
+}
+.stat-team-name {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:0.95rem
+}
+.stat-value {
+  font-weight:700;
+  color:var(--accent-primary);
+  min-width:60px;
+  text-align:right;
+  font-family:'Poppins',sans-serif;
+  font-size:1.1rem
+}
+.card-badges {
+  display:flex;
+  gap:0.5rem;
+  align-items:center
+}
+.card-badge {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  border-radius:4px;
+  font-weight:700;
+  font-size:0.85rem;
+  color:#fff
+}
+.card-yellow {background:var(--accent-yellow);color:#000}
+.card-red {background:var(--accent-red);color:#fff}
 @media(max-width:768px) {
   .row2 {grid-template-columns:1fr}
+  .row3 {grid-template-columns:1fr}
   .hd {flex-direction:column;gap:1rem}
   .hd-left {flex-direction:column;gap:1rem}
   .t1 {font-size:1.875rem}
@@ -373,6 +430,21 @@ body {
       <div class="cd">
         <p class="ct">👑 Máximos goleadores</p>
         <div id="topScorers" style="max-height:220px;overflow-y:auto"></div>
+      </div>
+    </div>
+
+    <div class="row3">
+      <div class="cd">
+        <p class="ct">🔥 Top 10 equipos (más goles)</p>
+        <div id="topTeamGoals" style="max-height:250px;overflow-y:auto"></div>
+      </div>
+      <div class="cd">
+        <p class="ct">🛡️ Top 10 defensas (menos goles)</p>
+        <div id="topDefense" style="max-height:250px;overflow-y:auto"></div>
+      </div>
+      <div class="cd">
+        <p class="ct">⚠️ Estadísticas de penales y tarjetas</p>
+        <div id="penalties" style="max-height:250px;overflow-y:auto"></div>
       </div>
     </div>
 
@@ -526,23 +598,58 @@ function updateChart(chart, colors){
 function build(matches){
   const played=matches.filter(m=>m.score);
   const mins=[],sc={},gg={};
+  const teamStats={},penaltyStats={},cardStats={};
   teamGoals={};
-  let pn=0,og=0;
+  let pn=0,og=0,totalPenalties=0;
 
   for(const m of played){
     const g=m.group||'?';
     if(!gg[g])gg[g]=0;
+    
+    // Inicializar stats de equipos
+    if(!teamStats[m.team1])teamStats[m.team1]={goals:0,against:0,penalties:0};
+    if(!teamStats[m.team2])teamStats[m.team2]={goals:0,against:0,penalties:0};
+    
+    // Inicializar tarjetas
+    if(!cardStats[m.team1])cardStats[m.team1]={yellow:0,red:0};
+    if(!cardStats[m.team2])cardStats[m.team2]={yellow:0,red:0};
+    
+    const[s1,s2]=m.score.ft;
+    teamStats[m.team1].goals+=s1;
+    teamStats[m.team1].against+=s2;
+    teamStats[m.team2].goals+=s2;
+    teamStats[m.team2].against+=s1;
+    
     for(const gl of[...(m.goals1||[]),...(m.goals2||[])]){
       const mn=pm(gl.minute);
       if(mn===null)continue;
       mins.push(mn);
       gg[g]++;
-      if(gl.penalty)pn++;
+      if(gl.penalty){
+        pn++;
+        totalPenalties++;
+        const team=m.goals1.includes(gl)?m.team1:m.team2;
+        teamStats[team].penalties++;
+      }
       if(gl.owngoal)og++;
       else {
         sc[gl.name]=(sc[gl.name]||0)+1;
         teamGoals[gl.name]=m.goals1.includes(gl)?m.team1:m.team2;
       }
+    }
+    
+    // Procesar tarjetas (si están disponibles)
+    if(m.cards1){
+      m.cards1.forEach(c=>{
+        if(c.type==='yellow')cardStats[m.team1].yellow++;
+        else if(c.type==='red')cardStats[m.team1].red++;
+      });
+    }
+    if(m.cards2){
+      m.cards2.forEach(c=>{
+        if(c.type==='yellow')cardStats[m.team2].yellow++;
+        else if(c.type==='red')cardStats[m.team2].red++;
+      });
     }
   }
 
@@ -620,6 +727,62 @@ function build(matches){
     </div>`;
   }).join('');
 
+  // Top 10 equipos con más goles
+  const topTeams=Object.entries(teamStats).sort((a,b)=>b[1].goals-a[1].goals).slice(0,10);
+  document.getElementById('topTeamGoals').innerHTML=topTeams.map(([team,stats])=>{
+    const flag=getFlag(team);
+    return`<div class="stat-row">
+      <div class="stat-team">
+        <span style="font-size:1.5rem">${flag}</span>
+        <span class="stat-team-name">${team}</span>
+      </div>
+      <div class="stat-value">${stats.goals}</div>
+    </div>`;
+  }).join('');
+
+  // Top 10 defensas más sólidas
+  const topDefense=Object.entries(teamStats).sort((a,b)=>a[1].against-b[1].against).slice(0,10);
+  document.getElementById('topDefense').innerHTML=topDefense.map(([team,stats])=>{
+    const flag=getFlag(team);
+    return`<div class="stat-row">
+      <div class="stat-team">
+        <span style="font-size:1.5rem">${flag}</span>
+        <span class="stat-team-name">${team}</span>
+      </div>
+      <div class="stat-value" style="color:var(--accent-green)">${stats.against}</div>
+    </div>`;
+  }).join('');
+
+  // Penales y tarjetas
+  const topCards=Object.entries(cardStats).sort((a,b)=>(b[1].yellow+b[1].red*2)-(a[1].yellow+a[1].red*2)).slice(0,5);
+  const penaltyPct=tot>0?((totalPenalties/tot)*100).toFixed(1):0;
+  document.getElementById('penalties').innerHTML=`
+    <div class="stat-row">
+      <div style="flex:1">Penales convertidos</div>
+      <div class="stat-value">${totalPenalties}/${tot}</div>
+    </div>
+    <div class="stat-row">
+      <div style="flex:1">% de penales</div>
+      <div class="stat-value">${penaltyPct}%</div>
+    </div>
+    <div style="border-top:1px solid var(--border-light);margin:0.75rem 0;padding-top:0.75rem">
+      <p style="font-size:0.85rem;color:var(--text-secondary);margin:0 0 0.5rem;font-weight:600">Equipos más sancionados:</p>
+      ${topCards.map(([team,cards])=>{
+        const flag=getFlag(team);
+        return`<div class="stat-row">
+          <div class="stat-team">
+            <span style="font-size:1.5rem">${flag}</span>
+            <span class="stat-team-name">${team}</span>
+          </div>
+          <div class="card-badges">
+            ${cards.yellow>0?`<div class="card-badge card-yellow">${cards.yellow}</div>`:''}
+            ${cards.red>0?`<div class="card-badge card-red">R</div>`:''}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+
   const hist=[
     {y:'2006',g:147,m:64},
     {y:'2010',g:145,m:64},
@@ -673,6 +836,15 @@ function build(matches){
     </div>`;
   }).join('');
 }
+
+const hist=[
+  {y:'2006',g:147,m:64},
+  {y:'2010',g:145,m:64},
+  {y:'2014',g:171,m:64},
+  {y:'2018',g:169,m:64},
+  {y:'2022',g:172,m:64},
+  {y:'2026*',g:0,m:0},
+];
 
 initTheme();
 go();
