@@ -53,9 +53,10 @@ body{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);min-height:100vh
 .dt{font-size:0.75rem;color:#8b92a9;min-width:90px;text-align:right;letter-spacing:0.02em}
 .ld{padding:4rem 2rem;text-align:center;font-size:1rem;color:#8b92a9}
 .note{font-size:0.75rem;color:#8b92a9;margin:1rem 0 0;font-style:italic}
-.scorer-item{display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0}
+.scorer-item{display:flex;align-items:center;gap:0.75rem;padding:0.75rem;margin:0.25rem 0;border-radius:0.5rem;background:rgba(0,212,255,0.05);border-left:2px solid #00d4ff}
 .scorer-flag{font-size:1.5rem;line-height:1}
-.scorer-goals{background:linear-gradient(135deg,#00d4ff,#0099ff);padding:0.25rem 0.5rem;border-radius:0.4rem;font-weight:700;font-size:0.85rem;color:#0f1419}
+.scorer-name{flex:1}
+.scorer-goals{background:linear-gradient(135deg,#00d4ff,#0099ff);padding:0.35rem 0.75rem;border-radius:0.4rem;font-weight:700;font-size:0.85rem;color:#0f1419}
 @media(max-width:768px){.row2{grid-template-columns:1fr}.hd{flex-direction:column;gap:1rem}.t1{font-size:1.875rem}.krow{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
 @media(max-width:480px){.krow{grid-template-columns:1fr}.rg{grid-template-columns:1fr}.tn[style*="text-align:right"]{text-align:left;margin-top:0.5rem}}
 </style>
@@ -188,6 +189,9 @@ const sh=n=>{
   return p.length>1?p[p.length-1]:n;
 };
 
+// Mapa de equipos para vincular goleadores
+let teamGoals={};
+
 async function go(){
   document.getElementById('L').style.display='block';
   document.getElementById('D').style.display='none';
@@ -206,6 +210,7 @@ async function go(){
 function build(matches){
   const played=matches.filter(m=>m.score);
   const mins=[],sc={},gg={};
+  teamGoals={};
   let pn=0,og=0;
 
   for(const m of played){
@@ -218,7 +223,10 @@ function build(matches){
       gg[g]++;
       if(gl.penalty)pn++;
       if(gl.owngoal)og++;
-      else sc[gl.name]=(sc[gl.name]||0)+1;
+      else {
+        sc[gl.name]=(sc[gl.name]||0)+1;
+        teamGoals[gl.name]=m.goals1.includes(gl)?m.team1:m.team2;
+      }
     }
   }
 
@@ -285,15 +293,46 @@ function build(matches){
   document.getElementById('topScorers').innerHTML=tops.map(([name,goals])=>{
     const nameParts=name.trim().split(' ');
     const lastName=nameParts[nameParts.length-1];
-    const scorerTeam=played.flatMap(m=>[...(m.goals1||[]),...(m.goals2||[])]).find(g=>g.name===name);
-    const teamName=scorerTeam?played.find(m=>[...(m.goals1||[]),...(m.goals2||[])].some(g=>g.name===name))?.[scorerTeam.penalty?'team1':'team2']:null;
-    const flag=teamName?getFlag(teamName):'🌍';
+    const team=teamGoals[name]||'Unknown';
+    const flag=getFlag(team);
     return`<div class="scorer-item">
       <span class="scorer-flag">${flag}</span>
-      <span style="flex:1">${lastName}</span>
+      <span class="scorer-name">${lastName}</span>
       <span class="scorer-goals">${goals}</span>
     </div>`;
   }).join('');
+
+  const hist=[
+    {y:'2006',g:147,m:64},
+    {y:'2010',g:145,m:64},
+    {y:'2014',g:171,m:64},
+    {y:'2018',g:169,m:64},
+    {y:'2022',g:172,m:64},
+    {y:'2026*',g:tot,m:played.length},
+  ];
+  const hcols=hist.map(h=>h.y==='2026*'?'#00d4ff':'#0099ff');
+  if(C.h)C.h.destroy();
+  C.h=new Chart(document.getElementById('cH'),{
+    type:'bar',
+    data:{
+      labels:hist.map(h=>h.y),
+      datasets:[{data:hist.map(h=>+(h.g/h.m).toFixed(2)),backgroundColor:hcols,borderRadius:8,borderSkipped:false,label:'Goles/partido'}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{backgroundColor:'rgba(0,0,0,0.8)',padding:12,titleFont:{size:13,weight:'bold'},bodyFont:{size:12},callbacks:{label:ctx=>{
+          const h=hist[ctx.dataIndex];
+          return`${ctx.formattedValue} goles/partido (${h.g} goles, ${h.m} partidos)`;
+        }}}
+      },
+      scales:{
+        x:{grid:{display:false,drawBorder:false},ticks:{color:'#8b92a9',font:{size:12}}},
+        y:{min:2,max:2.8,grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'#8b92a9'}}
+      }
+    }
+  });
 
   document.getElementById('R').innerHTML=played.slice().reverse().slice(0,10).map(m=>{
     const[s1,s2]=m.score.ft;
