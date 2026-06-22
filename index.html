@@ -6,59 +6,331 @@
   <title>Copa del Mundo 2026 - Tablero Estadístico</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 </head>
-<body style="margin:0;padding:0;background:#0f1419;font-family:'Inter',sans-serif;color:#e1e8ed">
+<body style="margin:0;padding:0;font-family:'Inter',sans-serif">
 
 <h2 class="sr-only">Copa del Mundo 2026 — tablero estadístico con goles por minuto, promedios, goleadores y perspectiva histórica.</h2>
 
 <style>
-*{box-sizing:border-box}
-body{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);min-height:100vh;padding:1.5rem}
-.container{max-width:1200px;margin:0 auto}
-.hd{display:flex;justify-content:space-between;align-items:flex-start;padding:2rem 0 1.5rem;border-bottom:2px solid rgba(255,255,255,0.08)}
-.t1{font-size:2.5rem;font-weight:800;font-family:'Poppins',sans-serif;color:#fff;margin:0;background:linear-gradient(135deg,#00d4ff 0%,#0099ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.t2{font-size:0.875rem;color:#8b92a9;margin:0.75rem 0 0;letter-spacing:0.02em}
-.btn-refresh{background:linear-gradient(135deg,#00d4ff 0%,#0099ff 100%);border:none;color:#0f1419;padding:0.75rem 1.5rem;border-radius:0.5rem;font-weight:600;cursor:pointer;font-size:0.875rem;transition:all 0.3s ease;display:flex;align-items:center;gap:0.5rem}
-.btn-refresh:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,255,0.3)}
-.krow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin:2rem 0}
-.k{background:linear-gradient(135deg,rgba(0,212,255,0.1) 0%,rgba(0,153,255,0.05) 100%);border:1px solid rgba(0,212,255,0.2);border-radius:1rem;padding:1.5rem;transition:all 0.3s ease;position:relative;overflow:hidden}
-.k:nth-child(1){border-left:4px solid #00d4ff}
-.k:nth-child(2){border-left:4px solid #ff6b6b}
-.k:nth-child(3){border-left:4px solid #51cf66}
-.k:nth-child(4){border-left:4px solid #ffa94d}
-.k::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#00d4ff 0%,#0099ff 100%)}
-.k:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.4);box-shadow:0 12px 32px rgba(0,212,255,0.15)}
-.kl{font-size:0.75rem;color:#8b92a9;margin:0 0 0.75rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:600}
-.kv{font-size:2.5rem;font-weight:700;color:#00d4ff;margin:0;line-height:1.1;font-family:'Poppins',sans-serif}
-.k:nth-child(2) .kv{color:#ff6b6b}
-.k:nth-child(3) .kv{color:#51cf66}
-.k:nth-child(4) .kv{color:#ffa94d}
-.ks{font-size:0.875rem;color:#8b92a9;margin:0.75rem 0 0}
-.st{font-size:0.875rem;font-weight:700;color:#00d4ff;text-transform:uppercase;letter-spacing:0.1em;margin:2.5rem 0 1.5rem}
-.cd{background:rgba(20,25,38,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:1.25rem;padding:1.75rem;backdrop-filter:blur(10px);transition:all 0.3s ease}
-.cd:hover{border-color:rgba(0,212,255,0.2);background:rgba(20,25,38,0.8)}
-.ct{font-size:1rem;color:#e1e8ed;margin:0 0 1.25rem;font-weight:600}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
-.lg{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem;font-size:0.875rem;color:#8b92a9;align-items:center}
-.lg span{display:flex;align-items:center;gap:0.5rem}
-.r{display:flex;align-items:center;gap:1rem;padding:1rem;border-bottom:1px solid rgba(255,255,255,0.06);transition:all 0.2s ease;border-radius:0.5rem}
-.r:hover{background:rgba(0,212,255,0.05);border-color:rgba(0,212,255,0.2)}
-.r:last-child{border-bottom:none}
-.rg{flex:1;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1rem;font-size:1rem}
-.team-item{display:flex;align-items:center;gap:0.75rem}
-.team-flag{font-size:1.75rem;line-height:1}
-.tn{color:#e1e8ed;text-align:left}
-.tn.w{font-weight:700;color:#00d4ff}
-.sc{font-size:1.25rem;font-weight:700;text-align:center;color:#00d4ff;font-family:'Poppins',sans-serif;min-width:60px}
-.gb{font-size:0.75rem;padding:0.5rem 0.875rem;border-radius:0.5rem;background:linear-gradient(135deg,rgba(0,212,255,0.1) 0%,rgba(0,153,255,0.1) 100%);color:#00d4ff;white-space:nowrap;font-weight:600;border:1px solid rgba(0,212,255,0.2)}
-.dt{font-size:0.75rem;color:#8b92a9;min-width:90px;text-align:right;letter-spacing:0.02em}
-.ld{padding:4rem 2rem;text-align:center;font-size:1rem;color:#8b92a9}
-.note{font-size:0.75rem;color:#8b92a9;margin:1rem 0 0;font-style:italic}
-.scorer-item{display:flex;align-items:center;gap:0.75rem;padding:0.75rem;margin:0.25rem 0;border-radius:0.5rem;background:rgba(0,212,255,0.05);border-left:2px solid #00d4ff}
-.scorer-flag{font-size:1.5rem;line-height:1}
-.scorer-name{flex:1}
-.scorer-goals{background:linear-gradient(135deg,#00d4ff,#0099ff);padding:0.35rem 0.75rem;border-radius:0.4rem;font-weight:700;font-size:0.85rem;color:#0f1419}
-@media(max-width:768px){.row2{grid-template-columns:1fr}.hd{flex-direction:column;gap:1rem}.t1{font-size:1.875rem}.krow{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
-@media(max-width:480px){.krow{grid-template-columns:1fr}.rg{grid-template-columns:1fr}.tn[style*="text-align:right"]{text-align:left;margin-top:0.5rem}}
+:root {
+  --bg-primary: #0f1419;
+  --bg-secondary: #1a1f2e;
+  --bg-tertiary: rgba(20,25,38,0.6);
+  --text-primary: #e1e8ed;
+  --text-secondary: #8b92a9;
+  --text-tertiary: #5a6275;
+  --border-color: rgba(255,255,255,0.08);
+  --border-light: rgba(255,255,255,0.06);
+  --accent-primary: #00d4ff;
+  --accent-secondary: #0099ff;
+  --accent-red: #ff6b6b;
+  --accent-green: #51cf66;
+  --accent-orange: #ffa94d;
+  --chart-grid: rgba(255,255,255,0.05);
+  --chart-text: #8b92a9;
+  --shadow: rgba(0,212,255,0.15);
+}
+
+body.light-theme {
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #e8ecf1;
+  --bg-tertiary: rgba(255,255,255,0.7);
+  --text-primary: #1a2332;
+  --text-secondary: #5a6b7d;
+  --text-tertiary: #8b95a8;
+  --border-color: rgba(0,0,0,0.08);
+  --border-light: rgba(0,0,0,0.06);
+  --accent-primary: #0088cc;
+  --accent-secondary: #0066aa;
+  --accent-red: #cc3333;
+  --accent-green: #339933;
+  --accent-orange: #ee8833;
+  --chart-grid: rgba(0,0,0,0.06);
+  --chart-text: #666;
+  --shadow: rgba(0,136,204,0.15);
+}
+
+* {box-sizing:border-box}
+body {
+  background:linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  min-height:100vh;
+  padding:1.5rem;
+  color:var(--text-primary);
+  transition:background 0.3s ease, color 0.3s ease
+}
+.container {max-width:1200px;margin:0 auto}
+.hd {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding:2rem 0 1.5rem;
+  border-bottom:2px solid var(--border-color)
+}
+.hd-left {display:flex;align-items:center;gap:2rem}
+.t1 {
+  font-size:2.5rem;
+  font-weight:800;
+  font-family:'Poppins',sans-serif;
+  color:var(--text-primary);
+  margin:0;
+  background:linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text
+}
+.t2 {
+  font-size:0.875rem;
+  color:var(--text-secondary);
+  margin:0.75rem 0 0;
+  letter-spacing:0.02em
+}
+.hd-controls {display:flex;gap:1rem;align-items:center}
+.btn-refresh, .btn-theme {
+  background:linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border:none;
+  color:#0f1419;
+  padding:0.75rem 1.5rem;
+  border-radius:0.5rem;
+  font-weight:600;
+  cursor:pointer;
+  font-size:0.875rem;
+  transition:all 0.3s ease;
+  display:flex;
+  align-items:center;
+  gap:0.5rem
+}
+.btn-theme {
+  color:var(--text-primary);
+  background:rgba(var(--accent-primary), 0.1);
+  border:1px solid var(--accent-primary)
+}
+.btn-refresh:hover, .btn-theme:hover {
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px var(--shadow)
+}
+.krow {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1.25rem;
+  margin:2rem 0
+}
+.k {
+  background:linear-gradient(135deg,rgba(0,212,255,0.1) 0%,rgba(0,153,255,0.05) 100%);
+  border:1px solid var(--border-color);
+  border-radius:1rem;
+  padding:1.5rem;
+  transition:all 0.3s ease;
+  position:relative;
+  overflow:hidden
+}
+.light-theme .k {
+  background:linear-gradient(135deg,rgba(0,136,204,0.08) 0%,rgba(0,102,170,0.04) 100%)
+}
+.k:nth-child(1) {border-left:4px solid var(--accent-primary)}
+.k:nth-child(2) {border-left:4px solid var(--accent-red)}
+.k:nth-child(3) {border-left:4px solid var(--accent-green)}
+.k:nth-child(4) {border-left:4px solid var(--accent-orange)}
+.k::before {
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:3px;
+  background:linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)
+}
+.k:hover {
+  transform:translateY(-4px);
+  border-color:var(--accent-primary);
+  box-shadow:0 12px 32px var(--shadow)
+}
+.kl {
+  font-size:0.75rem;
+  color:var(--text-secondary);
+  margin:0 0 0.75rem;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  font-weight:600
+}
+.kv {
+  font-size:2.5rem;
+  font-weight:700;
+  color:var(--accent-primary);
+  margin:0;
+  line-height:1.1;
+  font-family:'Poppins',sans-serif
+}
+.k:nth-child(2) .kv {color:var(--accent-red)}
+.k:nth-child(3) .kv {color:var(--accent-green)}
+.k:nth-child(4) .kv {color:var(--accent-orange)}
+.ks {
+  font-size:0.875rem;
+  color:var(--text-secondary);
+  margin:0.75rem 0 0
+}
+.st {
+  font-size:0.875rem;
+  font-weight:700;
+  color:var(--accent-primary);
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  margin:2.5rem 0 1.5rem
+}
+.cd {
+  background:var(--bg-tertiary);
+  border:1px solid var(--border-color);
+  border-radius:1.25rem;
+  padding:1.75rem;
+  backdrop-filter:blur(10px);
+  transition:all 0.3s ease
+}
+.cd:hover {
+  border-color:var(--accent-primary);
+  background:rgba(var(--bg-tertiary), 0.8)
+}
+.ct {
+  font-size:1rem;
+  color:var(--text-primary);
+  margin:0 0 1.25rem;
+  font-weight:600
+}
+.row2 {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.5rem;
+  margin-bottom:2rem
+}
+.lg {
+  display:flex;
+  flex-wrap:wrap;
+  gap:1rem;
+  margin-bottom:1.25rem;
+  font-size:0.875rem;
+  color:var(--text-secondary);
+  align-items:center
+}
+.lg span {display:flex;align-items:center;gap:0.5rem}
+.r {
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  padding:1rem;
+  border-bottom:1px solid var(--border-light);
+  transition:all 0.2s ease;
+  border-radius:0.5rem
+}
+.r:hover {
+  background:rgba(0,212,255,0.05);
+  border-color:var(--accent-primary)
+}
+.light-theme .r:hover {background:rgba(0,136,204,0.05)}
+.r:last-child {border-bottom:none}
+.rg {
+  flex:1;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:1rem;
+  font-size:1rem
+}
+.team-item {
+  display:flex;
+  align-items:center;
+  gap:0.75rem
+}
+.team-flag {font-size:1.75rem;line-height:1}
+.tn {
+  color:var(--text-primary);
+  text-align:left
+}
+.tn.w {
+  font-weight:700;
+  color:var(--accent-primary)
+}
+.sc {
+  font-size:1.25rem;
+  font-weight:700;
+  text-align:center;
+  color:var(--accent-primary);
+  font-family:'Poppins',sans-serif;
+  min-width:60px
+}
+.gb {
+  font-size:0.75rem;
+  padding:0.5rem 0.875rem;
+  border-radius:0.5rem;
+  background:linear-gradient(135deg,rgba(0,212,255,0.1) 0%,rgba(0,153,255,0.1) 100%);
+  color:var(--accent-primary);
+  white-space:nowrap;
+  font-weight:600;
+  border:1px solid var(--accent-primary)
+}
+.light-theme .gb {
+  background:linear-gradient(135deg,rgba(0,136,204,0.08) 0%,rgba(0,102,170,0.08) 100%);
+  color:var(--accent-primary);
+  border-color:var(--accent-primary)
+}
+.dt {
+  font-size:0.75rem;
+  color:var(--text-secondary);
+  min-width:90px;
+  text-align:right;
+  letter-spacing:0.02em
+}
+.ld {
+  padding:4rem 2rem;
+  text-align:center;
+  font-size:1rem;
+  color:var(--text-secondary)
+}
+.note {
+  font-size:0.75rem;
+  color:var(--text-secondary);
+  margin:1rem 0 0;
+  font-style:italic
+}
+.scorer-item {
+  display:flex;
+  align-items:center;
+  gap:0.75rem;
+  padding:0.75rem;
+  margin:0.25rem 0;
+  border-radius:0.5rem;
+  background:rgba(0,212,255,0.05);
+  border-left:2px solid var(--accent-primary)
+}
+.light-theme .scorer-item {background:rgba(0,136,204,0.05)}
+.scorer-flag {font-size:1.5rem;line-height:1}
+.scorer-name {flex:1}
+.scorer-goals {
+  background:linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  padding:0.35rem 0.75rem;
+  border-radius:0.4rem;
+  font-weight:700;
+  font-size:0.85rem;
+  color:#0f1419
+}
+@media(max-width:768px) {
+  .row2 {grid-template-columns:1fr}
+  .hd {flex-direction:column;gap:1rem}
+  .hd-left {flex-direction:column;gap:1rem}
+  .t1 {font-size:1.875rem}
+  .krow {grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+}
+@media(max-width:480px) {
+  .krow {grid-template-columns:1fr}
+  .rg {grid-template-columns:1fr}
+}
+@keyframes spin {to {transform:rotate(360deg)}}
+::-webkit-scrollbar {width:6px}
+::-webkit-scrollbar-track {background:rgba(255,255,255,0.05)}
+.light-theme ::-webkit-scrollbar-track {background:rgba(0,0,0,0.05)}
+::-webkit-scrollbar-thumb {
+  background:rgba(0,212,255,0.3);
+  border-radius:3px
+}
+.light-theme ::-webkit-scrollbar-thumb {background:rgba(0,136,204,0.3)}
+::-webkit-scrollbar-thumb:hover {background:rgba(0,212,255,0.5)}
+.light-theme ::-webkit-scrollbar-thumb:hover {background:rgba(0,136,204,0.5)}
 </style>
 
 <div id="L" class="ld">
@@ -69,11 +341,16 @@ body{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);min-height:100vh
 <div id="D" style="display:none">
   <div class="container">
     <div class="hd">
-      <div>
-        <p class="t1">⚽ Copa del Mundo 2026</p>
-        <p class="t2" id="ts">datos en tiempo real · openfootball/worldcup.json</p>
+      <div class="hd-left">
+        <div>
+          <p class="t1">⚽ Copa del Mundo 2026</p>
+          <p class="t2" id="ts">datos en tiempo real · openfootball/worldcup.json</p>
+        </div>
       </div>
-      <button onclick="go()" class="btn-refresh">🔄 Actualizar</button>
+      <div class="hd-controls">
+        <button onclick="toggleTheme()" class="btn-theme" id="themeBtn">🌙 Oscuro</button>
+        <button onclick="go()" class="btn-refresh">🔄 Actualizar</button>
+      </div>
     </div>
 
     <div class="krow" id="K"></div>
@@ -81,9 +358,9 @@ body{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);min-height:100vh
     <p class="st">📊 Distribución de goles por minuto</p>
     <div class="cd" style="margin-bottom:2rem">
       <div class="lg">
-        <span><span style="width:12px;height:12px;border-radius:3px;background:#00d4ff;display:inline-block"></span>Goles por franja</span>
-        <span style="color:#ff6b6b"><span style="width:20px;height:0;border-top:3px dashed #ff6b6b;display:inline-block"></span>Entretiempo / fin reglamentario</span>
-        <span style="color:#ffa94d"><span style="width:20px;height:0;border-top:3px dashed #ffa94d;display:inline-block"></span>Pausa hidratación (~23' / ~68')</span>
+        <span><span style="width:12px;height:12px;border-radius:3px;background:var(--accent-primary);display:inline-block"></span>Goles por franja</span>
+        <span style="color:var(--accent-red)"><span style="width:20px;height:0;border-top:3px dashed var(--accent-red);display:inline-block"></span>Entretiempo / fin reglamentario</span>
+        <span style="color:var(--accent-orange)"><span style="width:20px;height:0;border-top:3px dashed var(--accent-orange);display:inline-block"></span>Pausa hidratación (~23' / ~68')</span>
       </div>
       <div style="position:relative;height:240px"><canvas id="cM" role="img" aria-label="Histograma de goles por franja de minutos">Goles distribuidos en franjas de 10 minutos a lo largo del partido.</canvas></div>
     </div>
@@ -110,20 +387,34 @@ body{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);min-height:100vh
   </div>
 </div>
 
-<style>
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:rgba(255,255,255,0.05)}
-::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.3);border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:rgba(0,212,255,0.5)}
-</style>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 const WURL='https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json';
 const C={};
+
+// Tema claro/oscuro
+function initTheme() {
+  const saved=localStorage.getItem('theme')||'dark';
+  applyTheme(saved);
+}
+
+function applyTheme(theme) {
+  if(theme==='light') {
+    document.body.classList.add('light-theme');
+    document.getElementById('themeBtn').textContent='☀️ Claro';
+  } else {
+    document.body.classList.remove('light-theme');
+    document.getElementById('themeBtn').textContent='🌙 Oscuro';
+  }
+  localStorage.setItem('theme', theme);
+  updateCharts();
+}
+
+function toggleTheme() {
+  const current=localStorage.getItem('theme')||'dark';
+  const newTheme=current==='dark'?'light':'dark';
+  applyTheme(newTheme);
+}
 
 // Mapa de países a banderas emoji
 const countryFlags={
@@ -144,6 +435,16 @@ const countryFlags={
 const getFlag=t=>{
   t=(t||'').trim();
   return countryFlags[t]||'🌍';
+};
+
+const getChartColors=()=>{
+  const isDark=!document.body.classList.contains('light-theme');
+  return {
+    text:isDark?'#8b92a9':'#666',
+    grid:isDark?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.06)',
+    primary:'#00d4ff',
+    secondary:'#0099ff'
+  };
 };
 
 Chart.defaults.font.family="'Inter',sans-serif";
@@ -189,7 +490,6 @@ const sh=n=>{
   return p.length>1?p[p.length-1]:n;
 };
 
-// Mapa de equipos para vincular goleadores
 let teamGoals={};
 
 async function go(){
@@ -205,6 +505,22 @@ async function go(){
   }catch(e){
     document.getElementById('L').innerHTML='<p style="color:#ff6b6b">Error al cargar los datos. <button onclick="go()" class="btn-refresh">Reintentar</button></p>';
   }
+}
+
+function updateCharts(){
+  const colors=getChartColors();
+  if(C.m)updateChart(C.m, colors);
+  if(C.g)updateChart(C.g, colors);
+  if(C.t)updateChart(C.t, colors);
+  if(C.h)updateChart(C.h, colors);
+}
+
+function updateChart(chart, colors){
+  chart.options.scales.x.ticks.color=colors.text;
+  chart.options.scales.y.ticks.color=colors.text;
+  if(chart.options.scales.x.grid)chart.options.scales.x.grid.color=colors.grid;
+  if(chart.options.scales.y.grid)chart.options.scales.y.grid.color=colors.grid;
+  chart.update();
 }
 
 function build(matches){
@@ -251,10 +567,12 @@ function build(matches){
     else bn[9]++;
   }
 
+  const colors=getChartColors();
+
   if(C.m)C.m.destroy();
   C.m=new Chart(document.getElementById('cM'),{
     type:'bar',
-    data:{labels:bl,datasets:[{data:bn,backgroundColor:'#00d4ff',borderRadius:8,borderSkipped:false,label:'Goles'}]},
+    data:{labels:bl,datasets:[{data:bn,backgroundColor:colors.primary,borderRadius:8,borderSkipped:false,label:'Goles'}]},
     options:{
       responsive:true,maintainAspectRatio:false,
       plugins:{
@@ -262,8 +580,8 @@ function build(matches){
         tooltip:{backgroundColor:'rgba(0,0,0,0.8)',padding:12,titleFont:{size:13,weight:'bold'},bodyFont:{size:12},callbacks:{label:ctx=>`${ctx.formattedValue} goles`}}
       },
       scales:{
-        x:{grid:{display:false,drawBorder:false},ticks:{color:'#8b92a9',font:{size:11}}},
-        y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'#8b92a9'}}
+        x:{grid:{display:false,drawBorder:false},ticks:{color:colors.text,font:{size:11}}},
+        y:{beginAtZero:true,grid:{color:colors.grid,drawBorder:false},ticks:{color:colors.text}}
       }
     }
   });
@@ -278,13 +596,13 @@ function build(matches){
   if(C.g)C.g.destroy();
   C.g=new Chart(document.getElementById('cG'),{
     type:'bar',
-    data:{labels:ge.map(([g])=>g.replace('Group ','')),datasets:[{data:ge.map(([,v])=>v),backgroundColor:'#00d4ff',borderRadius:8,borderSkipped:false,label:'Goles'}]},
+    data:{labels:ge.map(([g])=>g.replace('Group ','')),datasets:[{data:ge.map(([,v])=>v),backgroundColor:colors.primary,borderRadius:8,borderSkipped:false,label:'Goles'}]},
     options:{
       responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(0,0,0,0.8)',padding:12,titleFont:{size:13,weight:'bold'},bodyFont:{size:12},callbacks:{label:ctx=>`${ctx.formattedValue} goles`}}},
       scales:{
-        x:{grid:{display:false,drawBorder:false},ticks:{color:'#8b92a9',font:{size:11}}},
-        y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'#8b92a9'}}
+        x:{grid:{display:false,drawBorder:false},ticks:{color:colors.text,font:{size:11}}},
+        y:{beginAtZero:true,grid:{color:colors.grid,drawBorder:false},ticks:{color:colors.text}}
       }
     }
   });
@@ -310,7 +628,7 @@ function build(matches){
     {y:'2022',g:172,m:64},
     {y:'2026*',g:tot,m:played.length},
   ];
-  const hcols=hist.map(h=>h.y==='2026*'?'#00d4ff':'#0099ff');
+  const hcols=hist.map(h=>h.y==='2026*'?colors.primary:colors.secondary);
   if(C.h)C.h.destroy();
   C.h=new Chart(document.getElementById('cH'),{
     type:'bar',
@@ -328,8 +646,8 @@ function build(matches){
         }}}
       },
       scales:{
-        x:{grid:{display:false,drawBorder:false},ticks:{color:'#8b92a9',font:{size:12}}},
-        y:{min:2,max:2.8,grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'#8b92a9'}}
+        x:{grid:{display:false,drawBorder:false},ticks:{color:colors.text,font:{size:12}}},
+        y:{min:2,max:2.8,grid:{color:colors.grid,drawBorder:false},ticks:{color:colors.text}}
       }
     }
   });
@@ -356,6 +674,7 @@ function build(matches){
   }).join('');
 }
 
+initTheme();
 go();
 </script>
 </body>
