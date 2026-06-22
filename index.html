@@ -21,10 +21,17 @@ body{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);min-height:100vh
 .btn-refresh:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,255,0.3)}
 .krow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin:2rem 0}
 .k{background:linear-gradient(135deg,rgba(0,212,255,0.1) 0%,rgba(0,153,255,0.05) 100%);border:1px solid rgba(0,212,255,0.2);border-radius:1rem;padding:1.5rem;transition:all 0.3s ease;position:relative;overflow:hidden}
+.k:nth-child(1){border-left:4px solid #00d4ff}
+.k:nth-child(2){border-left:4px solid #ff6b6b}
+.k:nth-child(3){border-left:4px solid #51cf66}
+.k:nth-child(4){border-left:4px solid #ffa94d}
 .k::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#00d4ff 0%,#0099ff 100%)}
 .k:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.4);box-shadow:0 12px 32px rgba(0,212,255,0.15)}
 .kl{font-size:0.75rem;color:#8b92a9;margin:0 0 0.75rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:600}
 .kv{font-size:2.5rem;font-weight:700;color:#00d4ff;margin:0;line-height:1.1;font-family:'Poppins',sans-serif}
+.k:nth-child(2) .kv{color:#ff6b6b}
+.k:nth-child(3) .kv{color:#51cf66}
+.k:nth-child(4) .kv{color:#ffa94d}
 .ks{font-size:0.875rem;color:#8b92a9;margin:0.75rem 0 0}
 .st{font-size:0.875rem;font-weight:700;color:#00d4ff;text-transform:uppercase;letter-spacing:0.1em;margin:2.5rem 0 1.5rem}
 .cd{background:rgba(20,25,38,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:1.25rem;padding:1.75rem;backdrop-filter:blur(10px);transition:all 0.3s ease}
@@ -36,18 +43,21 @@ body{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);min-height:100vh
 .r{display:flex;align-items:center;gap:1rem;padding:1rem;border-bottom:1px solid rgba(255,255,255,0.06);transition:all 0.2s ease;border-radius:0.5rem}
 .r:hover{background:rgba(0,212,255,0.05);border-color:rgba(0,212,255,0.2)}
 .r:last-child{border-bottom:none}
-.rg{flex:1;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem;font-size:1rem}
+.rg{flex:1;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:1rem;font-size:1rem}
+.team-item{display:flex;align-items:center;gap:0.75rem}
+.team-flag{font-size:1.75rem;line-height:1}
 .tn{color:#e1e8ed;text-align:left}
 .tn.w{font-weight:700;color:#00d4ff}
-.tn[style*="text-align:right"]{text-align:right}
-.tn.w[style*="text-align:right"]{color:#00d4ff}
-.sc{font-size:1.25rem;font-weight:700;text-align:center;color:#00d4ff;font-family:'Poppins',sans-serif}
+.sc{font-size:1.25rem;font-weight:700;text-align:center;color:#00d4ff;font-family:'Poppins',sans-serif;min-width:60px}
 .gb{font-size:0.75rem;padding:0.5rem 0.875rem;border-radius:0.5rem;background:linear-gradient(135deg,rgba(0,212,255,0.1) 0%,rgba(0,153,255,0.1) 100%);color:#00d4ff;white-space:nowrap;font-weight:600;border:1px solid rgba(0,212,255,0.2)}
 .dt{font-size:0.75rem;color:#8b92a9;min-width:90px;text-align:right;letter-spacing:0.02em}
 .ld{padding:4rem 2rem;text-align:center;font-size:1rem;color:#8b92a9}
 .note{font-size:0.75rem;color:#8b92a9;margin:1rem 0 0;font-style:italic}
+.scorer-item{display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0}
+.scorer-flag{font-size:1.5rem;line-height:1}
+.scorer-goals{background:linear-gradient(135deg,#00d4ff,#0099ff);padding:0.25rem 0.5rem;border-radius:0.4rem;font-weight:700;font-size:0.85rem;color:#0f1419}
 @media(max-width:768px){.row2{grid-template-columns:1fr}.hd{flex-direction:column;gap:1rem}.t1{font-size:1.875rem}.krow{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
-@media(max-width:480px){.krow{grid-template-columns:1fr}.rg{grid-template-columns:auto}.tn[style*="text-align:right"]{text-align:left;margin-top:0.5rem}}
+@media(max-width:480px){.krow{grid-template-columns:1fr}.rg{grid-template-columns:1fr}.tn[style*="text-align:right"]{text-align:left;margin-top:0.5rem}}
 </style>
 
 <div id="L" class="ld">
@@ -84,7 +94,7 @@ body{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);min-height:100vh
       </div>
       <div class="cd">
         <p class="ct">👑 Máximos goleadores</p>
-        <div style="position:relative;height:220px"><canvas id="cT" role="img" aria-label="Jugadores con más goles en el Mundial 2026">Ranking de jugadores por cantidad de goles anotados.</canvas></div>
+        <div id="topScorers" style="max-height:220px;overflow-y:auto"></div>
       </div>
     </div>
 
@@ -103,12 +113,37 @@ body{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);min-height:100vh
 @keyframes spin{
   to{transform:rotate(360deg)}
 }
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:rgba(255,255,255,0.05)}
+::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(0,212,255,0.5)}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 const WURL='https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json';
 const C={};
+
+// Mapa de países a banderas emoji
+const countryFlags={
+  'Argentina':'🇦🇷','Australia':'🇦🇺','Austria':'🇦🇹','Belgium':'🇧🇪','Bolivia':'🇧🇴','Brazil':'🇧🇷',
+  'Canada':'🇨🇦','Chile':'🇨🇱','China':'🇨🇳','Colombia':'🇨🇴','Costa Rica':'🇨🇷','Croatia':'🇭🇷',
+  'Czechia':'🇨🇿','Denmark':'🇩🇰','Ecuador':'🇪🇨','Egypt':'🇪🇬','England':'🇬🇧','France':'🇫🇷',
+  'Germany':'🇩🇪','Ghana':'🇬🇭','Greece':'🇬🇷','Guatemala':'🇬🇹','Honduras':'🇭🇳','Hungary':'🇭🇺',
+  'Iceland':'🇮🇸','India':'🇮🇳','Indonesia':'🇮🇩','Iran':'🇮🇷','Ireland':'🇮🇪','Israel':'🇮🇱',
+  'Italy':'🇮🇹','Japan':'🇯🇵','Korea':'🇰🇷','Kosovo':'🇽🇰','Mexico':'🇲🇽','Morocco':'🇲🇦',
+  'Netherlands':'🇳🇱','New Zealand':'🇳🇿','Nigeria':'🇳🇬','Norway':'🇳🇴','Panama':'🇵🇦','Paraguay':'🇵🇾',
+  'Peru':'🇵🇪','Poland':'🇵🇱','Portugal':'🇵🇹','Romania':'🇷🇴','Russia':'🇷🇺','Saudi Arabia':'🇸🇦',
+  'Scotland':'🇬🇧','Senegal':'🇸🇳','Serbia':'🇷🇸','Slovakia':'🇸🇰','Slovenia':'🇸🇮','South Africa':'🇿🇦',
+  'Spain':'🇪🇸','Sweden':'🇸🇪','Switzerland':'🇨🇭','Thailand':'🇹🇭','Tunisia':'🇹🇳','Turkey':'🇹🇷',
+  'Ukraine':'🇺🇦','United States':'🇺🇸','Uruguay':'🇺🇾','Venezuela':'🇻🇪','Vietnam':'🇻🇳','Wales':'🇬🇧',
+  'Jamaica':'🇯🇲','Jamaíca':'🇯🇲','Panamá':'🇵🇦','Corea':'🇰🇷','Corea del Sur':'🇰🇷'
+};
+
+const getFlag=t=>{
+  t=(t||'').trim();
+  return countryFlags[t]||'🌍';
+};
 
 Chart.defaults.font.family="'Inter',sans-serif";
 
@@ -247,63 +282,34 @@ function build(matches){
   });
 
   const tops=Object.entries(sc).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  if(C.t)C.t.destroy();
-  C.t=new Chart(document.getElementById('cT'),{
-    type:'bar',
-    data:{labels:tops.map(([n])=>sh(n)),datasets:[{data:tops.map(([,v])=>v),backgroundColor:'#00d4ff',borderRadius:8,borderSkipped:false,label:'Goles'}]},
-    options:{
-      indexAxis:'y',
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(0,0,0,0.8)',padding:12,titleFont:{size:13,weight:'bold'},bodyFont:{size:12},callbacks:{
-        title:ctx=>{const full=tops[ctx[0].dataIndex][0];return full;},
-        label:ctx=>`${ctx.formattedValue} goles`
-      }}},
-      scales:{
-        x:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'#8b92a9'}},
-        y:{grid:{display:false,drawBorder:false},ticks:{color:'#8b92a9',font:{size:11}}}
-      }
-    }
-  });
-
-  const hist=[
-    {y:'2006',g:147,m:64},
-    {y:'2010',g:145,m:64},
-    {y:'2014',g:171,m:64},
-    {y:'2018',g:169,m:64},
-    {y:'2022',g:172,m:64},
-    {y:'2026*',g:tot,m:played.length},
-  ];
-  const hcols=hist.map(h=>h.y==='2026*'?'#00d4ff':'#0099ff');
-  if(C.h)C.h.destroy();
-  C.h=new Chart(document.getElementById('cH'),{
-    type:'bar',
-    data:{
-      labels:hist.map(h=>h.y),
-      datasets:[{data:hist.map(h=>+(h.g/h.m).toFixed(2)),backgroundColor:hcols,borderRadius:8,borderSkipped:false,label:'Goles/partido'}]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{
-        legend:{display:false},
-        tooltip:{backgroundColor:'rgba(0,0,0,0.8)',padding:12,titleFont:{size:13,weight:'bold'},bodyFont:{size:12},callbacks:{label:ctx=>{
-          const h=hist[ctx.dataIndex];
-          return`${ctx.formattedValue} goles/partido (${h.g} goles, ${h.m} partidos)`;
-        }}}
-      },
-      scales:{
-        x:{grid:{display:false,drawBorder:false},ticks:{color:'#8b92a9',font:{size:12}}},
-        y:{min:2,grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'#8b92a9'}}
-      }
-    }
-  });
+  document.getElementById('topScorers').innerHTML=tops.map(([name,goals])=>{
+    const nameParts=name.trim().split(' ');
+    const lastName=nameParts[nameParts.length-1];
+    const scorerTeam=played.flatMap(m=>[...(m.goals1||[]),...(m.goals2||[])]).find(g=>g.name===name);
+    const teamName=scorerTeam?played.find(m=>[...(m.goals1||[]),...(m.goals2||[])].some(g=>g.name===name))?.[scorerTeam.penalty?'team1':'team2']:null;
+    const flag=teamName?getFlag(teamName):'🌍';
+    return`<div class="scorer-item">
+      <span class="scorer-flag">${flag}</span>
+      <span style="flex:1">${lastName}</span>
+      <span class="scorer-goals">${goals}</span>
+    </div>`;
+  }).join('');
 
   document.getElementById('R').innerHTML=played.slice().reverse().slice(0,10).map(m=>{
     const[s1,s2]=m.score.ft;
+    const f1=getFlag(m.team1);
+    const f2=getFlag(m.team2);
     return`<div class="r">
       <div class="rg">
-        <span class="tn ${s1>s2?'w':''}">${m.team1}</span>
+        <div class="team-item">
+          <span class="team-flag">${f1}</span>
+          <span class="tn ${s1>s2?'w':''}">${m.team1}</span>
+        </div>
         <span class="sc">${s1} – ${s2}</span>
-        <span class="tn ${s2>s1?'w':''}">${m.team2}</span>
+        <div class="team-item" style="flex-direction:row-reverse">
+          <span class="team-flag">${f2}</span>
+          <span class="tn ${s2>s1?'w':''}">${m.team2}</span>
+        </div>
       </div>
       <span class="gb">${(m.group||'').replace('Group ','Grupo ')}</span>
       <span class="dt">${m.date}</span>
