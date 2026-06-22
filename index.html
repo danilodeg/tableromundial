@@ -1,85 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Copa del Mundo 2026 - Tablero Estadístico</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+</head>
+<body style="margin:0;padding:0;background:#0f1419;font-family:'Inter',sans-serif;color:#e1e8ed">
 
 <h2 class="sr-only">Copa del Mundo 2026 — tablero estadístico con goles por minuto, promedios, goleadores y perspectiva histórica.</h2>
 
 <style>
 *{box-sizing:border-box}
-.hd{display:flex;justify-content:space-between;align-items:flex-start;padding:1rem 0 .5rem}
-.t1{font-size:18px;font-weight:500;color:var(--color-text-primary);margin:0}
-.t2{font-size:11px;color:var(--color-text-tertiary);margin:3px 0 0}
-.krow{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin:.75rem 0 1.25rem}
-.k{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.875rem}
-.kl{font-size:11px;color:var(--color-text-secondary);margin:0 0 3px}
-.kv{font-size:20px;font-weight:500;color:var(--color-text-primary);margin:0;line-height:1.1}
-.ks{font-size:10px;color:var(--color-text-tertiary);margin:2px 0 0}
-.st{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;margin:1.25rem 0 .625rem}
-.cd{background:var(--color-background-primary);border:.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem}
-.ct{font-size:12px;color:var(--color-text-secondary);margin:0 0 8px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.25rem}
-.lg{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;font-size:11px;color:var(--color-text-secondary);align-items:center}
-.r{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:.5px solid var(--color-border-tertiary)}
+body{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);min-height:100vh;padding:1.5rem}
+.container{max-width:1200px;margin:0 auto}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;padding:2rem 0 1.5rem;border-bottom:2px solid rgba(255,255,255,0.08)}
+.t1{font-size:2.5rem;font-weight:800;font-family:'Poppins',sans-serif;color:#fff;margin:0;background:linear-gradient(135deg,#00d4ff 0%,#0099ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.t2{font-size:0.875rem;color:#8b92a9;margin:0.75rem 0 0;letter-spacing:0.02em}
+.btn-refresh{background:linear-gradient(135deg,#00d4ff 0%,#0099ff 100%);border:none;color:#0f1419;padding:0.75rem 1.5rem;border-radius:0.5rem;font-weight:600;cursor:pointer;font-size:0.875rem;transition:all 0.3s ease;display:flex;align-items:center;gap:0.5rem}
+.btn-refresh:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,255,0.3)}
+.krow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin:2rem 0}
+.k{background:linear-gradient(135deg,rgba(0,212,255,0.1) 0%,rgba(0,153,255,0.05) 100%);border:1px solid rgba(0,212,255,0.2);border-radius:1rem;padding:1.5rem;transition:all 0.3s ease;position:relative;overflow:hidden}
+.k::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#00d4ff 0%,#0099ff 100%)}
+.k:hover{transform:translateY(-4px);border-color:rgba(0,212,255,0.4);box-shadow:0 12px 32px rgba(0,212,255,0.15)}
+.kl{font-size:0.75rem;color:#8b92a9;margin:0 0 0.75rem;text-transform:uppercase;letter-spacing:0.1em;font-weight:600}
+.kv{font-size:2.5rem;font-weight:700;color:#00d4ff;margin:0;line-height:1.1;font-family:'Poppins',sans-serif}
+.ks{font-size:0.875rem;color:#8b92a9;margin:0.75rem 0 0}
+.st{font-size:0.875rem;font-weight:700;color:#00d4ff;text-transform:uppercase;letter-spacing:0.1em;margin:2.5rem 0 1.5rem}
+.cd{background:rgba(20,25,38,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:1.25rem;padding:1.75rem;backdrop-filter:blur(10px);transition:all 0.3s ease}
+.cd:hover{border-color:rgba(0,212,255,0.2);background:rgba(20,25,38,0.8)}
+.ct{font-size:1rem;color:#e1e8ed;margin:0 0 1.25rem;font-weight:600}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
+.lg{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem;font-size:0.875rem;color:#8b92a9;align-items:center}
+.lg span{display:flex;align-items:center;gap:0.5rem}
+.r{display:flex;align-items:center;gap:1rem;padding:1rem;border-bottom:1px solid rgba(255,255,255,0.06);transition:all 0.2s ease;border-radius:0.5rem}
+.r:hover{background:rgba(0,212,255,0.05);border-color:rgba(0,212,255,0.2)}
 .r:last-child{border-bottom:none}
-.rg{flex:1;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;font-size:13px}
-.tn{color:var(--color-text-primary)}
-.tn.w{font-weight:500}
-.sc{font-size:14px;font-weight:500;text-align:center;color:var(--color-text-primary)}
-.gb{font-size:10px;padding:2px 6px;border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-secondary);white-space:nowrap}
-.dt{font-size:10px;color:var(--color-text-tertiary);min-width:78px;text-align:right}
-.ld{padding:3rem;text-align:center;font-size:13px;color:var(--color-text-secondary)}
-.note{font-size:10px;color:var(--color-text-tertiary);margin:6px 0 0}
-@media(max-width:480px){.row2{grid-template-columns:1fr}}
+.rg{flex:1;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem;font-size:1rem}
+.tn{color:#e1e8ed;text-align:left}
+.tn.w{font-weight:700;color:#00d4ff}
+.tn[style*="text-align:right"]{text-align:right}
+.tn.w[style*="text-align:right"]{color:#00d4ff}
+.sc{font-size:1.25rem;font-weight:700;text-align:center;color:#00d4ff;font-family:'Poppins',sans-serif}
+.gb{font-size:0.75rem;padding:0.5rem 0.875rem;border-radius:0.5rem;background:linear-gradient(135deg,rgba(0,212,255,0.1) 0%,rgba(0,153,255,0.1) 100%);color:#00d4ff;white-space:nowrap;font-weight:600;border:1px solid rgba(0,212,255,0.2)}
+.dt{font-size:0.75rem;color:#8b92a9;min-width:90px;text-align:right;letter-spacing:0.02em}
+.ld{padding:4rem 2rem;text-align:center;font-size:1rem;color:#8b92a9}
+.note{font-size:0.75rem;color:#8b92a9;margin:1rem 0 0;font-style:italic}
+@media(max-width:768px){.row2{grid-template-columns:1fr}.hd{flex-direction:column;gap:1rem}.t1{font-size:1.875rem}.krow{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
+@media(max-width:480px){.krow{grid-template-columns:1fr}.rg{grid-template-columns:auto}.tn[style*="text-align:right"]{text-align:left;margin-top:0.5rem}}
 </style>
 
-<div id="L" class="ld">Cargando datos del mundial...</div>
-
-<div id="D" style="display:none;padding-bottom:2rem">
-  <div class="hd">
-    <div>
-      <p class="t1">Copa del Mundo 2026</p>
-      <p class="t2" id="ts">datos en tiempo real · openfootball/worldcup.json</p>
-    </div>
-    <button onclick="go()" style="font-size:12px"><i class="ti ti-refresh" aria-hidden="true"></i> Actualizar</button>
-  </div>
-
-  <div class="krow" id="K"></div>
-
-  <p class="st">Distribución de goles por minuto</p>
-  <div class="cd" style="margin-bottom:1.25rem">
-    <div class="lg">
-      <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:#378add;display:inline-block"></span>Goles por franja</span>
-      <span style="display:flex;align-items:center;gap:5px;color:#e24b4a"><span style="width:20px;height:0;border-top:2px dashed #e24b4a;display:inline-block"></span>Entretiempo / fin reglamentario</span>
-      <span style="display:flex;align-items:center;gap:5px;color:#ef9f27"><span style="width:20px;height:0;border-top:2px dashed #ef9f27;display:inline-block"></span>Pausa hidratación (~23' / ~68')</span>
-    </div>
-    <div style="position:relative;height:215px"><canvas id="cM" role="img" aria-label="Histograma de goles por franja de minutos">Goles distribuidos en franjas de 10 minutos a lo largo del partido.</canvas></div>
-  </div>
-
-  <div class="row2">
-    <div class="cd">
-      <p class="ct">Goles por grupo</p>
-      <div style="position:relative;height:195px"><canvas id="cG" role="img" aria-label="Goles por grupo del mundial 2026">Total de goles anotados en cada grupo del torneo.</canvas></div>
-    </div>
-    <div class="cd">
-      <p class="ct">Máximos goleadores</p>
-      <div style="position:relative;height:195px"><canvas id="cT" role="img" aria-label="Jugadores con más goles en el Mundial 2026">Ranking de jugadores por cantidad de goles anotados.</canvas></div>
-    </div>
-  </div>
-
-  <p class="st">Perspectiva histórica — promedio de goles por partido</p>
-  <div class="cd" style="margin-bottom:1.25rem">
-    <div style="position:relative;height:155px"><canvas id="cH" role="img" aria-label="Promedio de goles por partido en mundiales desde 2006 hasta 2026">Comparación del promedio de goles por partido entre mundiales recientes y el actual 2026.</canvas></div>
-    <p class="note">* 2026: dato parcial basado en partidos disputados hasta la fecha. El formato 2026 incluye 104 partidos (vs 64 en ediciones anteriores) con 48 selecciones.</p>
-  </div>
-
-  <p class="st">Últimos resultados</p>
-  <div class="cd"><div id="R"></div></div>
+<div id="L" class="ld">
+  <div style="animation:spin 1s linear infinite;display:inline-block;margin-bottom:1rem">⚽</div>
+  <p>Cargando datos del mundial...</p>
 </div>
+
+<div id="D" style="display:none">
+  <div class="container">
+    <div class="hd">
+      <div>
+        <p class="t1">⚽ Copa del Mundo 2026</p>
+        <p class="t2" id="ts">datos en tiempo real · openfootball/worldcup.json</p>
+      </div>
+      <button onclick="go()" class="btn-refresh">🔄 Actualizar</button>
+    </div>
+
+    <div class="krow" id="K"></div>
+
+    <p class="st">📊 Distribución de goles por minuto</p>
+    <div class="cd" style="margin-bottom:2rem">
+      <div class="lg">
+        <span><span style="width:12px;height:12px;border-radius:3px;background:#00d4ff;display:inline-block"></span>Goles por franja</span>
+        <span style="color:#ff6b6b"><span style="width:20px;height:0;border-top:3px dashed #ff6b6b;display:inline-block"></span>Entretiempo / fin reglamentario</span>
+        <span style="color:#ffa94d"><span style="width:20px;height:0;border-top:3px dashed #ffa94d;display:inline-block"></span>Pausa hidratación (~23' / ~68')</span>
+      </div>
+      <div style="position:relative;height:240px"><canvas id="cM" role="img" aria-label="Histograma de goles por franja de minutos">Goles distribuidos en franjas de 10 minutos a lo largo del partido.</canvas></div>
+    </div>
+
+    <div class="row2">
+      <div class="cd">
+        <p class="ct">🏆 Goles por grupo</p>
+        <div style="position:relative;height:220px"><canvas id="cG" role="img" aria-label="Goles por grupo del mundial 2026">Total de goles anotados en cada grupo del torneo.</canvas></div>
+      </div>
+      <div class="cd">
+        <p class="ct">👑 Máximos goleadores</p>
+        <div style="position:relative;height:220px"><canvas id="cT" role="img" aria-label="Jugadores con más goles en el Mundial 2026">Ranking de jugadores por cantidad de goles anotados.</canvas></div>
+      </div>
+    </div>
+
+    <p class="st">📈 Perspectiva histórica — promedio de goles por partido</p>
+    <div class="cd" style="margin-bottom:2rem">
+      <div style="position:relative;height:180px"><canvas id="cH" role="img" aria-label="Promedio de goles por partido en mundiales desde 2006 hasta 2026">Comparación del promedio de goles por partido en ediciones anteriores.</canvas></div>
+      <p class="note">* 2026: dato parcial basado en partidos disputados hasta la fecha. El formato 2026 incluye 104 partidos (vs 64 en ediciones anteriores) con 48 selecciones.</p>
+    </div>
+
+    <p class="st">📋 Últimos resultados</p>
+    <div class="cd"><div id="R"></div></div>
+  </div>
+</div>
+
+<style>
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+</style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 const WURL='https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json';
 const C={};
-const dk=window.matchMedia('(prefers-color-scheme: dark)').matches;
-const gc=dk?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';
-const tc=dk?'#999':'#666';
+
+Chart.defaults.font.family="'Inter',sans-serif";
 
 Chart.register({
   id:'vl',
@@ -94,15 +125,15 @@ Chart.register({
       ctx.beginPath();
       ctx.setLineDash(dash||[6,4]);
       ctx.strokeStyle=color;
-      ctx.lineWidth=1.5;
+      ctx.lineWidth=2;
       ctx.moveTo(px,top);
       ctx.lineTo(px,bottom);
       ctx.stroke();
       if(lbl){
         ctx.setLineDash([]);
         ctx.fillStyle=color;
-        ctx.font='9px system-ui,sans-serif';
-        ctx.fillText(lbl,px+3,top+11);
+        ctx.font='10px Inter,sans-serif';
+        ctx.fillText(lbl,px+3,top+12);
       }
       ctx.restore();
     });
@@ -133,7 +164,7 @@ async function go(){
     document.getElementById('L').style.display='none';
     document.getElementById('D').style.display='block';
   }catch(e){
-    document.getElementById('L').innerHTML='<p style="color:var(--color-text-danger)">Error al cargar los datos. <button onclick="go()">Reintentar</button></p>';
+    document.getElementById('L').innerHTML='<p style="color:#ff6b6b">Error al cargar los datos. <button onclick="go()" class="btn-refresh">Reintentar</button></p>';
   }
 }
 
@@ -180,37 +211,37 @@ function build(matches){
   if(C.m)C.m.destroy();
   C.m=new Chart(document.getElementById('cM'),{
     type:'bar',
-    data:{labels:bl,datasets:[{data:bn,backgroundColor:'#378add',borderRadius:3,label:'Goles'}]},
+    data:{labels:bl,datasets:[{data:bn,backgroundColor:'#00d4ff',borderRadius:8,borderSkipped:false,label:'Goles'}]},
     options:{
       responsive:true,maintainAspectRatio:false,
       plugins:{
         legend:{display:false},
-        tooltip:{callbacks:{label:ctx=>`${ctx.formattedValue} goles`}},
-        vl:{n:10,lines:[
-          {at:5,color:'#e24b4a',dash:[6,4],lbl:'HT'},
-          {at:9,color:'#e24b4a',dash:[6,4],lbl:'FT'},
-          {at:2.2,color:'#ef9f27',dash:[4,3],lbl:"≈23'"},
-          {at:6.8,color:'#ef9f27',dash:[4,3],lbl:"≈68'"},
-        ]}
+        tooltip:{backgroundColor:'rgba(0,0,0,0.8)',padding:12,titleFont:{size:13,weight:'bold'},bodyFont:{size:12},callbacks:{label:ctx=>`${ctx.formattedValue} goles`}}
       },
       scales:{
-        x:{grid:{display:false},ticks:{color:tc,font:{size:11},autoSkip:false,maxRotation:0}},
-        y:{beginAtZero:true,grid:{color:gc},ticks:{color:tc,stepSize:2}}
+        x:{grid:{display:false,drawBorder:false},ticks:{color:'#8b92a9',font:{size:11}}},
+        y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'#8b92a9'}}
       }
     }
   });
+  C.m.options.plugins.vl={n:10,lines:[
+    {at:5,color:'#ff6b6b',dash:[6,4],lbl:'HT'},
+    {at:9,color:'#ff6b6b',dash:[6,4],lbl:'FT'},
+    {at:2.2,color:'#ffa94d',dash:[4,3],lbl:"≈23'"},
+    {at:6.8,color:'#ffa94d',dash:[4,3],lbl:"≈68'"},
+  ]};
 
   const ge=Object.entries(gg).sort((a,b)=>a[0].localeCompare(b[0]));
   if(C.g)C.g.destroy();
   C.g=new Chart(document.getElementById('cG'),{
     type:'bar',
-    data:{labels:ge.map(([g])=>g.replace('Group ','')),datasets:[{data:ge.map(([,v])=>v),backgroundColor:'#1d9e75',borderRadius:3,label:'Goles'}]},
+    data:{labels:ge.map(([g])=>g.replace('Group ','')),datasets:[{data:ge.map(([,v])=>v),backgroundColor:'#00d4ff',borderRadius:8,borderSkipped:false,label:'Goles'}]},
     options:{
       responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.formattedValue} goles`}}},
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(0,0,0,0.8)',padding:12,titleFont:{size:13,weight:'bold'},bodyFont:{size:12},callbacks:{label:ctx=>`${ctx.formattedValue} goles`}}},
       scales:{
-        x:{grid:{display:false},ticks:{color:tc,font:{size:11}}},
-        y:{beginAtZero:true,grid:{color:gc},ticks:{color:tc,stepSize:2}}
+        x:{grid:{display:false,drawBorder:false},ticks:{color:'#8b92a9',font:{size:11}}},
+        y:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'#8b92a9'}}
       }
     }
   });
@@ -219,17 +250,17 @@ function build(matches){
   if(C.t)C.t.destroy();
   C.t=new Chart(document.getElementById('cT'),{
     type:'bar',
-    data:{labels:tops.map(([n])=>sh(n)),datasets:[{data:tops.map(([,v])=>v),backgroundColor:'#7f77dd',borderRadius:3,label:'Goles'}]},
+    data:{labels:tops.map(([n])=>sh(n)),datasets:[{data:tops.map(([,v])=>v),backgroundColor:'#00d4ff',borderRadius:8,borderSkipped:false,label:'Goles'}]},
     options:{
       indexAxis:'y',
       responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(0,0,0,0.8)',padding:12,titleFont:{size:13,weight:'bold'},bodyFont:{size:12},callbacks:{
         title:ctx=>{const full=tops[ctx[0].dataIndex][0];return full;},
         label:ctx=>`${ctx.formattedValue} goles`
       }}},
       scales:{
-        x:{beginAtZero:true,grid:{color:gc},ticks:{color:tc,stepSize:1}},
-        y:{grid:{display:false},ticks:{color:tc,font:{size:11}}}
+        x:{beginAtZero:true,grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'#8b92a9'}},
+        y:{grid:{display:false,drawBorder:false},ticks:{color:'#8b92a9',font:{size:11}}}
       }
     }
   });
@@ -242,26 +273,26 @@ function build(matches){
     {y:'2022',g:172,m:64},
     {y:'2026*',g:tot,m:played.length},
   ];
-  const hcols=hist.map(h=>h.y==='2026*'?'#378add':(dk?'#5DCAA5':'#9FE1CB'));
+  const hcols=hist.map(h=>h.y==='2026*'?'#00d4ff':'#0099ff');
   if(C.h)C.h.destroy();
   C.h=new Chart(document.getElementById('cH'),{
     type:'bar',
     data:{
       labels:hist.map(h=>h.y),
-      datasets:[{data:hist.map(h=>+(h.g/h.m).toFixed(2)),backgroundColor:hcols,borderRadius:3,label:'Goles/partido'}]
+      datasets:[{data:hist.map(h=>+(h.g/h.m).toFixed(2)),backgroundColor:hcols,borderRadius:8,borderSkipped:false,label:'Goles/partido'}]
     },
     options:{
       responsive:true,maintainAspectRatio:false,
       plugins:{
         legend:{display:false},
-        tooltip:{callbacks:{label:ctx=>{
+        tooltip:{backgroundColor:'rgba(0,0,0,0.8)',padding:12,titleFont:{size:13,weight:'bold'},bodyFont:{size:12},callbacks:{label:ctx=>{
           const h=hist[ctx.dataIndex];
           return`${ctx.formattedValue} goles/partido (${h.g} goles, ${h.m} partidos)`;
         }}}
       },
       scales:{
-        x:{grid:{display:false},ticks:{color:tc,font:{size:12}}},
-        y:{min:2,grid:{color:gc},ticks:{color:tc}}
+        x:{grid:{display:false,drawBorder:false},ticks:{color:'#8b92a9',font:{size:12}}},
+        y:{min:2,grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'#8b92a9'}}
       }
     }
   });
@@ -272,7 +303,7 @@ function build(matches){
       <div class="rg">
         <span class="tn ${s1>s2?'w':''}">${m.team1}</span>
         <span class="sc">${s1} – ${s2}</span>
-        <span class="tn ${s2>s1?'w':''}" style="text-align:right">${m.team2}</span>
+        <span class="tn ${s2>s1?'w':''}">${m.team2}</span>
       </div>
       <span class="gb">${(m.group||'').replace('Group ','Grupo ')}</span>
       <span class="dt">${m.date}</span>
@@ -282,3 +313,5 @@ function build(matches){
 
 go();
 </script>
+</body>
+</html>
